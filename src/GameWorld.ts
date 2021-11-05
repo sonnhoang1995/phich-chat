@@ -22,6 +22,7 @@ export class GameWorld {
 
     constructor() {
         this.canvas = document.getElementById("my-canvas") as HTMLCanvasElement;
+        this.canvas.height = this.canvas.width / 1.875;
         this.context = this.canvas.getContext("2d")!;
         this.canvas.tabIndex = 1;
         this.canvas.focus();
