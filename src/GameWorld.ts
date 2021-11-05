@@ -90,6 +90,11 @@ export class GameWorld {
             this.clickEventHandler.bind(this),
             false
         );
+        this.canvas.addEventListener(
+            "touchstart",
+            this.touchEventHanlder.bind(this),
+            false
+        );
     }
 
     keyDownEventHandler(event: KeyboardEvent) {
@@ -114,6 +119,13 @@ export class GameWorld {
                 this.initialize();
             }
         }
+    }
+
+    touchEventHanlder(event: TouchEvent) {
+        if (event.type == "touchstart") {
+            this.phat.isJumping = true;
+        }
+        return false;
     }
 
     detectCollision() {
