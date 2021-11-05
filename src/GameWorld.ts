@@ -19,20 +19,24 @@ export class GameWorld {
     background: Background;
     enemySpawnRate: number = 90;
     popup: Popup;
+    myButton: HTMLElement;
 
     constructor() {
+        this.myButton = document.getElementById("my-button")!;
+        this.myButton.hidden = true;
         this.canvas = document.getElementById("my-canvas") as HTMLCanvasElement;
         this.canvas.height = this.canvas.width / 1.875;
         this.context = this.canvas.getContext("2d")!;
         this.canvas.tabIndex = 1;
         this.canvas.focus();
-        this.phat = new Phat(this.context, 100, 325, 0, -300);
+        this.phat = new Phat(this.context, 0,0,0,0);
         this.background = new Background(this.context, 0, -300, 0, 0);
         this.popup = new Popup(this.context);
     }
 
     initialize() {
         this.createWorld();
+        this.phat = new Phat(this.context, 100, 325, 0, -300);
         this.startTime = performance.now();
         requestAnimationFrame(this.loop.bind(this));
     }
@@ -57,6 +61,7 @@ export class GameWorld {
         if (this.detectCollision()) {
             cancelAnimationFrame(this.rAF_id);
             this.popup.render();
+            this.myButton.hidden = false;
             return false;
         }
 
@@ -86,11 +91,11 @@ export class GameWorld {
             this.keyDownEventHandler.bind(this),
             false
         );
-        this.canvas.addEventListener(
-            "click",
-            this.clickEventHandler.bind(this),
-            false
-        );
+        // this.canvas.addEventListener(
+        //     "click",
+        //     this.clickEventHandler.bind(this),
+        //     false
+        // );
         this.canvas.addEventListener(
             "touchstart",
             this.touchEventHanlder.bind(this),
@@ -105,22 +110,22 @@ export class GameWorld {
         return false;
     }
 
-    clickEventHandler(event: MouseEvent) {
-        if (this.detectCollision()) {
-            let rect = {
-                x: 250,
-                y: 100,
-                width: 190,
-                height: 100
-            };
-            let mousePosition = this.getMousePosition(this.canvas, event);
+    // clickEventHandler(event: MouseEvent) {
+    //     if (this.detectCollision()) {
+    //         let rect = {
+    //             x: 250,
+    //             y: 100,
+    //             width: 190,
+    //             height: 100
+    //         };
+    //         let mousePosition = this.getMousePosition(this.canvas, event);
 
-            if (this.isInside(mousePosition, rect)) {
-                this.phat = new Phat(this.context, 100, 325, 0, -300);
-                this.initialize();
-            }
-        }
-    }
+    //         if (this.isInside(mousePosition, rect)) {
+    //             this.phat = new Phat(this.context, 100, 325, 0, -300);
+    //             this.initialize();
+    //         }
+    //     }
+    // }
 
     touchEventHanlder(event: TouchEvent) {
         if (event.type == "touchstart") {
